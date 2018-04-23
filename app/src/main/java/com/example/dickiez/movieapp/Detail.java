@@ -19,15 +19,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Detail extends AppCompatActivity {
-    String VIDEO_PATH = "http://api.themoviedb.org/3/movie/";
-    String VIDEO_API = "/videos?api_key=81728309a12b337c7334a06681733deb";
-    String vid_key;
-    int vid_id;
+    Integer video_id;
+    String video_key;
     ImageView backdrop, poster, adult, pg;
-    TextView title, rating, release, overview, orilang, genre, video_id;
+    TextView title, rating, release, overview, orilang, genre, txt_video_id;
+    Video video;
     Result result;
-    List<Result> results;
-    VideoResult videoResults;
+    List<VideoResult> videoResults;
     Button bookmark;
 
     @Override
@@ -47,8 +45,7 @@ public class Detail extends AppCompatActivity {
         orilang = (TextView)findViewById(R.id.detail_lang);
         genre = (TextView)findViewById(R.id.detail_genre);
         bookmark = (Button)findViewById(R.id.btn_bookmark);
-        video_id = (TextView)findViewById(R.id.vid_id);
-        //vid_key = videoResults.getKey();
+        txt_video_id = (TextView)findViewById(R.id.vid_id);
 
 
         result = new GsonBuilder().create()
@@ -67,8 +64,8 @@ public class Detail extends AppCompatActivity {
         release.setText(result.getReleaseDate());
         overview.setText(result.getOverview());
         orilang.setText(result.getOriginalLanguage());
-        vid_id = result.getId();
-        video_id.setText(Integer.toString(vid_id));
+        video_id = result.getId();
+        youtubeLoad();
 
         //id.setText(Integer.toString(result.getId()));
             adult.setVisibility(View.VISIBLE);
@@ -84,12 +81,11 @@ public class Detail extends AppCompatActivity {
         backdrop.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Integer data = vid_id;
-                    Intent i = new Intent(Detail.this,Streaming.class);
-                    //i.putExtra("movie", new GsonBuilder().create().toJson(VIDEO_KEY));
-                    i.putExtra("movie", vid_key);
+                    String  data = video_key;
+                    Intent i = new Intent(Detail.this, Streaming. class);
+                    i.putExtra("key", data);
                     backdrop.getContext().startActivity(i);
-                    youtubeLoad(data);
+
                 }
         });
 
@@ -101,25 +97,17 @@ public class Detail extends AppCompatActivity {
         });
 
     }
-    public void setData(VideoResult videoResults) {
-        this.videoResults = videoResults;
-    }
 
-    public void youtubeLoad(int id){
+    public void youtubeLoad() {
         ApiInterface api = ApiClient.getRetrofit().create(ApiInterface.class);
 
-        Call<Video> call = api.getLink(vid_id);
+        Call<Video> call = api.getLink(video_id);
         call.enqueue(new Callback<Video>() {
             @Override
             public void onResponse(Call<Video> call, Response<Video> response) {
-                if (response.isSuccessful()) {
-                    List<VideoResult> link = response.body().getVideoResults();
-                    vid_key = link.get(0).getKey();
-                }
-
-                else {
-                    Toast.makeText(getApplicationContext(), "Kegagalan Tidak Membuatku Menyerah", Toast.LENGTH_SHORT).show();
-                }
+                videoResults = response.body().getVideoResults();
+                video_key = videoResults.get(0).getKey();
+                txt_video_id.setText(video_key);
             }
 
             @Override
@@ -127,7 +115,7 @@ public class Detail extends AppCompatActivity {
 
             }
         });
+
     }
 }
 
-//https://www.youtube.com/watch?v=

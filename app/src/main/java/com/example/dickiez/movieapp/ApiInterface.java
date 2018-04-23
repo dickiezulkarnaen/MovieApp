@@ -22,8 +22,10 @@ public interface ApiInterface {
     @GET("upcoming?api_key="+DB_API)
     Call<Movie> getUpcoming();
 
+    //BASE_URL = "http://api.themoviedb.org/3/movie/";
+    //https://api.themoviedb.org/3/movie/337167/videos?api_key=81728309a12b337c7334a06681733deb
 
-    @GET("{movie_id}/videos/api_key="+DB_API)
+    @GET("{movie_id}/videos?api_key="+DB_API)
     Call<Video> getLink(@Path("movie_id") int movie_id);
 
 }

@@ -13,11 +13,17 @@ import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.gson.GsonBuilder;
 
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class Streaming extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
     TextView mDisplayText;
-    VideoResult videoResult;
-    public static final String API_KEY = "AIzaSyDvOGU3w3pbrdnCuBVPIv5ep7xWJXKH3Ws";
-    private static String video_key = "";
+    String video_key;
+
+    public static final String API_KEY = "AIzaSyC3IXjgxphGbnAHkvYXdzWPrYotQUaKUhM";
     private static final int RECOVERY_DIALOG_REQUEST = 10;
 
     @Override
@@ -29,12 +35,12 @@ public class Streaming extends YouTubeBaseActivity implements YouTubePlayer.OnIn
         youTubePlayerView.initialize(API_KEY,this);
 
         mDisplayText = (TextView) findViewById(R.id.tv_display);
+        video_key = getIntent().getStringExtra("key");
+        mDisplayText.setText(video_key);
 
-        Bundle data = getIntent().getExtras();
-        String data_video = data.getString("movie");
-        mDisplayText.setText(data_video);
-        video_key = data_video;
         }
+
+
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
@@ -64,4 +70,5 @@ public class Streaming extends YouTubeBaseActivity implements YouTubePlayer.OnIn
     private YouTubePlayer.Provider getYoutubePlayerProvider() {
         return (YouTubePlayerView)findViewById(R.id.youtubeplayer);
     }
+
 }
