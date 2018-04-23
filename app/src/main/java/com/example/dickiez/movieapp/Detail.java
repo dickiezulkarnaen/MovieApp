@@ -45,7 +45,6 @@ public class Detail extends AppCompatActivity {
         orilang = (TextView)findViewById(R.id.detail_lang);
         genre = (TextView)findViewById(R.id.detail_genre);
         bookmark = (Button)findViewById(R.id.btn_bookmark);
-        txt_video_id = (TextView)findViewById(R.id.vid_id);
 
 
         result = new GsonBuilder().create()
@@ -107,7 +106,6 @@ public class Detail extends AppCompatActivity {
             public void onResponse(Call<Video> call, Response<Video> response) {
                 videoResults = response.body().getVideoResults();
                 video_key = videoResults.get(0).getKey();
-                txt_video_id.setText(video_key);
             }
 
             @Override

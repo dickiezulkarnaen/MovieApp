@@ -36,7 +36,7 @@ public class Streaming extends YouTubeBaseActivity implements YouTubePlayer.OnIn
 
         mDisplayText = (TextView) findViewById(R.id.tv_display);
         video_key = getIntent().getStringExtra("key");
-        mDisplayText.setText(video_key);
+        mDisplayText.setText("");
 
         }
 
